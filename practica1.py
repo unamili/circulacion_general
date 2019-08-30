@@ -241,7 +241,7 @@ ds=0.05
 primer_termino=((np.diff(psiF2,n=1, axis=1)))[50,:] /ds #este es el que tuvo que tirar magia dani con ese ds que viene del .dat (gridstep)
 segundo_termino=-QG_curlw2[51,:]
 tercer_termino=0.29*vortF2[50,:]
-
+#mjhhj
 
 plt.figure(33)
 plt.plot(primer_termino,"r", label='Dif fi')
@@ -253,3 +253,12 @@ plt.ylabel ('')
 plt.grid()
 plt.legend()
 plt.savefig("Ej3.png")
+
+
+neto = primer_termino -segundo_termino[2] -(-tercer_termino)
+
+
+
+
+
+
