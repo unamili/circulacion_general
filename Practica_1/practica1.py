@@ -5,7 +5,6 @@ from Cargar import cargar
 import matplotlib.animation as animation
 import math
 import time 
-import os 
 
 #%% Cargamos las salidas del modelo
 #Usamos la función "cargar" que está dentro del módulo "Cargar"
@@ -15,13 +14,13 @@ Ly=2000 #tamaño de la cuenca (dir y)
 nx=200 #puntos de grilla (dir x)
 ny=100 #puntos de grilla (dir y)
 
-dir_salida1='/Users/mini/Documents/Circulación/Océano/out_tmp1/'
+dir_salida1='/Users/mini/Documents/Circulación/Océano/Practica_1/out_tmp1/'
 psi_temp1,vort_temp1,psiF1,vortF1,QG_diag1,QG_curlw1,X1,Y1,dx1,dy1=cargar(dir_salida1,Lx,Ly,nx,ny)
 
-dir_salida2='/Users/mini/Documents/Circulación/Océano/out_tmp2/'
+dir_salida2='/Users/mini/Documents/Circulación/Océano/Practica_1/out_tmp2/'
 psi_temp2,vort_temp2,psiF2,vortF2,QG_diag2,QG_curlw2,X2,Y2,dx2,dy2=cargar(dir_salida2,Lx,Ly,nx,ny)
 
-dir_salida3='/Users/mini/Documents/Circulación/Océano/out_tmp3/'
+dir_salida3='/Users/mini/Documents/Circulación/Océano/Practica_1/out_tmp3/'
 psi_temp3,vort_temp3,psiF3,vortF3,QG_diag3,QG_curlw3,X3,Y3,dx3,dy3=cargar(dir_salida3,Lx,Ly,nx,ny)
 
 #en la matriz QG_diag tengo para todos los pasos temporales la función corriente (segunda columna), la vorticidad  (tercera) y la energía cinética (cuarta)
@@ -30,14 +29,14 @@ psi_temp3,vort_temp3,psiF3,vortF3,QG_diag3,QG_curlw3,X3,Y3,dx3,dy3=cargar(dir_sa
 
 #Quiero graficar la energía cinética para ver cuándo el modelo se estabiliza (me interesa el estado estacionario)
 
-plt.figure()
+fig1=plt.figure()
 plt.plot(QG_diag1[:,3], label='K1')
 plt.plot(QG_diag2[:,3], label='K2')
 plt.plot(QG_diag3[:,3], label='k3')
-plt.ylabel('')
+plt.ylabel('Adimensional')
 plt.xlabel('Pasos temporales')
 plt.grid()
-plt.title('Energia Cinética')
+plt.title('Energía Cinética')
 plt.legend()
 plt.savefig("Energia cinetica.png")
 
@@ -45,7 +44,7 @@ plt.savefig("Energia cinetica.png")
 #%%Dimensionalización de las variables psi y vort salidas del modelo
 
 #Defino parámetros de utilidad con valores típicos del problema
-B=10**-11 #beta
+B=2*10**-11 #beta
 D=3000 #priofundidad (m)
 Rho=1026 #densidad
 T_s=0.4 #stress del viento
@@ -69,31 +68,31 @@ xx, yy = np.meshgrid(X1, Y1) #Me genero la grilla para luego poder graficar. El 
 #Defino escalas para que los graficos sean comparables
 levels_psi=np.arange(-640000,10000,10000) #vector de -640000 a 0 cada 10000
 
-fig4=plt.figure()
+fig2=plt.figure()
 plt.contour(xx,yy,psiF1_dim, colors='k')
 plt.contourf(xx,yy,psiF1_dim, levels_psi)
 plt.xlabel("W <= (km) => E")   #nombre eje x
 plt.ylabel ("S <= (km) => N")   #nombre eje y
-plt.title("Funcion Corriente 1 (m^2/s)")   #nombre titulo
+plt.title("Función Corriente 1 (m^2/s)")   #nombre titulo
 plt.colorbar()
 plt.savefig("FuncionCorriente_1.png")
 
-fig5=plt.figure()
+fig3=plt.figure()
 plt.contour(xx,yy,psiF2_dim, colors='k')
 plt.contourf(xx,yy,psiF2_dim,levels_psi)
 plt.xlabel("W <= (km) => E")   #nombre eje x
 plt.ylabel ("S <= (km) => N")   #nombre eje y
-plt.title("Funcion Corriente 2 (m^2/s)")   #nombre titulo
+plt.title("Función Corriente 2 (m^2/s)")   #nombre titulo
 plt.colorbar()    #agrego la barra de colores
 plt.savefig("FuncionCorriente_2.png")
 
-fig6=plt.figure()
+fig4=plt.figure()
 plt.contour(xx,yy,psiF3_dim, colors='k')
 plt.contourf(xx,yy,psiF3_dim,levels_psi)
 #plt.contour(xx,yy,psiF3_dim, colors='k')
 plt.xlabel("W <= (km) => E")   #nombre eje x
 plt.ylabel ("S <= (km) => N")   #nombre eje y
-plt.title("Funcion Corriente 3 (m^2/s)")   #nombre titulo
+plt.title("Función Corriente 3 (m^2/s)")   #nombre titulo
 plt.colorbar()    #agrego la barra de colores
 plt.savefig("FuncionCorriente_3.png")
 
@@ -117,7 +116,7 @@ xx1, yy1 = np.meshgrid(X1[1:], Y1)
 levels_my=np.arange(-500,15,5) #vector de -175 a 25 cada 5
 
 #Uso la misma grilla para los 3
-fig7=plt.figure()
+fig5=plt.figure()
 #plt.contour(xx1[:,:20],yy1[:,:20],My1[:,:20], colors ='k')
 plt.contourf(xx1 [:,:20] , yy1[:,:20] , My1[:,:20] , levels_my )
 plt.xlabel("W <= (km) => E")   #nombre eje x
@@ -126,7 +125,7 @@ plt.title("Transporte 1 (Sv)")   #nombre titulo
 plt.colorbar()   #agrego la barra de colores
 plt.savefig("Transporte_1.png")
 
-fig8=plt.figure()
+fig6=plt.figure()
 #plt.contour(xx1[:,:20],yy1[:,:20],My2[:,:20], colors ='k')
 plt.contourf(xx1[:,:20],yy1[:,:20],My2[:,:20],levels_my)
 plt.xlabel("W <= (km) => E")   #nombre eje x
@@ -135,7 +134,7 @@ plt.title("Transporte 2 (Sv)")   #nombre titulo
 plt.colorbar()   #agrego la barra de colores
 plt.savefig("Transporte_2.png")
 
-fig9=plt.figure()
+fig7=plt.figure()
 #plt.contour(xx1[:,:20],yy1[:,:20],My3[:,:20], colors ='k')
 plt.contourf(xx1[:,:20],yy1[:,:20],My3[:,:20],levels_my)
 plt.xlabel("W <= (km) => E")   #nombre eje x
@@ -158,7 +157,7 @@ segmentos = np.arange(seg, L , seg)/1000 #con esto me armo una lisa que arranca 
 #   armado de figura
 #ax1=plt.subplot(311)  #es otra forma de hacer figuras. creo una figura vacia (o eso entiendo)
 
-plt.figure()
+fig8=plt.figure()
 plt.plot(segmentos, My_central1, label='K1')
 plt.plot(segmentos, My_central2, label='K2')
 plt.plot(segmentos, My_central3, label='K3')
@@ -176,7 +175,7 @@ Vort_central1=vortF1_dim[50,:] #Me quedo con la fila 50 de las matrices del tran
 Vort_central2=vortF2_dim[50,:]
 Vort_central3=vortF3_dim[50,:]
 
-plt.figure()
+fig9=plt.figure()
 plt.plot(segmentos, Vort_central1[1:], label='K1')
 plt.plot(segmentos, Vort_central2[1:], label='K2')
 plt.plot(segmentos, Vort_central3[1:], label='K3')
@@ -188,7 +187,7 @@ plt.legend()
 plt.xlim([-0.5,1000])
 plt.savefig("VorticidadCentral.png")
 
-#%%Transporte de la CBO
+#%%Transporte de la CBO 
 
 #corrida 1
 i=0  
@@ -219,7 +218,7 @@ CBO_ancho3=i*dx3
 
 
 #%% Transporte meridional total
-# uso la funcion suma sobre los cortes centrales
+# uso la función suma sobre los cortes centrales
 
 My_total_1= sum(My_central1)
 
@@ -229,36 +228,28 @@ My_total_3= sum(My_central3)
 
 
 
-#%% ejercicio 3. Usamos la simulacion numero 2
+#%% Aálisis de los términos de la ecuación de Stommel adimensional. Usamos la simulación numero 2
 
-#dif=np.diff(psiF2,n=1,axis=1) #le aplico el operador diferencial (en ex) a psi2
-#dif_central= dif[50,:]
-#QG_curlw2_central = QG_curlw2[50,:]
+ds=0.05 #es el grid step. Lo uso para dφ/dx. Ya que dφ la obtengo con la función "diff", dx=ds 
 
-#%% 3 con k1
-ds=0.05
-#primer termino
-primer_termino=((np.diff(psiF2,n=1, axis=1)))[50,:] /ds #este es el que tuvo que tirar magia dani con ese ds que viene del .dat (gridstep)
-segundo_termino=-QG_curlw2[51,:]
-tercer_termino=0.29*vortF2[50,:]
-#mjhhj
+# 1) término de función corriente
+primer_termino=((np.diff(psiF2,n=1,axis=1)))[51,:] /ds  #le aplico el operador diferencial (en ex) a psi2 y me quedo con el centro de la cuenca (por eso agarro la fila 51 y todas las columnas)
 
-plt.figure(33)
-plt.plot(primer_termino,"r", label='Dif fi')
-plt.plot(segundo_termino,"b", label= 'Rotor')
-plt.plot(tercer_termino,"g", label= 'Vort')
+# 2) término del rotor del viento
+segundo_termino=-QG_curlw2[51,3:]
+
+# 3) término de vorticidad
+tercer_termino=0.395*vortF2[51,1:] #0.395 es el eps2 (valor del K2 adim en el modelo)
+
+fig10 = plt.figure(33)
+plt.plot(segmentos, primer_termino,"r", label="dφ'/dx'" )
+plt.plot(segmentos, segundo_termino,"b", label= "- ∇'τ'")
+plt.plot(segmentos, tercer_termino,"g", label= "Kξ'")
 plt.legend()
-plt.xlabel("W <==> E")
-plt.ylabel ('')
+plt.xlabel("Distancia al borde Oeste de la cuenca (km)")
+plt.ylabel ('Adimensional')
 plt.grid()
 plt.legend()
-plt.savefig("Ej3.png")
+plt.savefig("Balance.png")
 
-
-neto = primer_termino -segundo_termino[2] -(-tercer_termino)
-
-
-
-
-
-
+#el rotor del viento es positivo, por eso en el grafico me queda negativo
